@@ -26,9 +26,9 @@ const keyArray = [
 const numberPad = props => {
  
   const mappedNumberPad = keyArray.map(btn => {
-    let typeCheck=props.buttonSubmit;
-    if (isNaN(btn.value)) {
-        typeCheck=(()=>props.operation(btn.value));
+    let typeCheck=(()=>props.operation(btn.value));
+    if (!isNaN(btn.value) || btn.value ==='.') {
+       typeCheck=props.buttonSubmit;
         
     }
     return (
