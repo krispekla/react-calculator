@@ -33,76 +33,90 @@ class Calculator extends Component {
   };
 
   operationHandler = operation => {
-    let input = parseFloat(this.state.input);
     let result = this.state.accumulator;
+    let input = parseFloat(this.state.input);
+    
+    //Using functions without numbers
+    if (isNaN(input)) {
+      input = "Enter number";
+      this.setState({input});
+    } else {
+      //Pushing history
+      const updateHistory = [...this.state.history];
+      updateHistory.push(input);
+      updateHistory.push(operation);
 
-    //Pushing history
-    const updateHistory = [...this.state.history];
-    updateHistory.push(input);
-    updateHistory.push(operation);
+      //Pushing operator
+      let operatorArray = [...this.state.currentOperator];
+      operatorArray.push(operation);
 
-    //Pushing operator
-    let operatorArray = [...this.state.currentOperator];
-    operatorArray.push(operation);
+      if (operatorArray.length === 2) {
+        //Add
+        if (operatorArray[0] === "+") {
+          result += input;
+        }
 
-    if (operatorArray.length === 2) {
-      //Add
-      if (operatorArray[0] === "+") {
-        result += input;
-      }
+        //Subtract
+        if (operatorArray[0] === "-") {
+          result -= input;
+        }
+        //Multiplication
+        if (operatorArray[0] === "*") {
+          result *= input;
+        }
 
-      //Subtract
-      if (operatorArray[0] === "-") {
-        result -= input;
-      }
-      //Multiplication
-      if (operatorArray[0] === "*") {
-        result *= input;
-      }
+        //Divide
+        if (operatorArray[0] === "/") {
+          result /= input;
+        }
 
-      //Divide
-      if (operatorArray[0] === "/") {
-        result /= input;
-      }
-
-      operatorArray.shift();
-
-      if (operation === "=") {
         operatorArray.shift();
-        operation = result;
-      }
-    }
 
-    this.resetInput();
-    this.setState({
-      input: operation,
-      currentOperator: operatorArray,
-      accumulator: input,
-      result,
-      history: updateHistory
-    });
-    if (operation === "+/-") {
-      if (input > 0) {
-        input = "-" + input;
-      } else {
-        input = toString(input);
-        input = input.substring(1, input.length);
+        if (operation === "=") {
+          operatorArray.shift();
+          operation = result;
+        }
       }
 
-      input = parseFloat(input);
-      operatorArray.shift();
-      result = input;
-      this.setState({ input: result, result, currentOperator: operatorArray });
-    }
-    if (operation === "%") {
-      result = 0;
-      result = input / 100;
+      this.resetInput();
+      this.setState({
+        input: operation,
+        currentOperator: operatorArray,
+        accumulator: input,
+        result,
+        history: updateHistory
+      });
+      if (operation === "+/-") {
+        if (input > 0) {
+          input = "-" + input;
+        } else {
+          input = toString(input);
+          input = input.substring(1, input.length);
+        }
 
-      operatorArray.shift();
-      this.setState({ input: result, result, currentOperator: operatorArray });
-    }
-    if (operation === "AC") {
-      this.clearAll();
+        input = parseFloat(input);
+        operatorArray.shift();
+        result = input;
+        this.setState({
+          input: result,
+          result,
+          currentOperator: operatorArray
+        });
+      }
+      if (operation === "%") {
+        result = 0;
+        result = input / 100;
+
+        operatorArray.shift();
+        this.setState({
+          input: result,
+          result,
+          currentOperator: operatorArray
+        });
+      }
+      if (operation === "AC") {
+        this.clearAll();
+      }
     }
   };
 
