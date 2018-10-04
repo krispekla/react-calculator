@@ -33,7 +33,7 @@ class Calculator extends Component {
   };
 
   operationHandler = operation => {
-    const input = parseFloat(this.state.input);
+    let input = parseFloat(this.state.input);
     let result = this.state.accumulator;
 
     //Pushing history
@@ -44,10 +44,8 @@ class Calculator extends Component {
     //Pushing operator
     let operatorArray = [...this.state.currentOperator];
     operatorArray.push(operation);
-    console.log(input);
+
     if (operatorArray.length === 2) {
-
-
       //Add
       if (operatorArray[0] === "+") {
         result += input;
@@ -83,7 +81,26 @@ class Calculator extends Component {
       result,
       history: updateHistory
     });
+    if (operation === "+/-") {
+      if (input > 0) {
+        input = "-" + input;
+      } else {
+        input = toString(input);
+        input = input.substring(1, input.length);
+      }
 
+      input = parseFloat(input);
+      operatorArray.shift();
+      result = input;
+      this.setState({ input: result, result, currentOperator: operatorArray });
+    }
+    if (operation === "%") {
+      result = 0;
+      result = input / 100;
+
+      operatorArray.shift();
+      this.setState({ input: result, result, currentOperator: operatorArray });
+    }
     if (operation === "AC") {
       this.clearAll();
     }
@@ -93,7 +110,7 @@ class Calculator extends Component {
     let submit = e.target.value;
     let input = this.state.input;
     if (isNaN(input)) {
-      input = '';
+      input = "";
     }
 
     submit = input + submit;
