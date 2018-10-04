@@ -1,11 +1,12 @@
 .Display {
-    width: 100%;
+    width: 80%;
     display: inline-block;
     border: none;
     background: inherit;
     color: white;
     height: 60px;
-    font-size: 2.5rem;
+    font-size: 3rem;
+    letter-spacing: 2px;
     margin-bottom: 50px;
     padding: 0px;
     text-align: right;
