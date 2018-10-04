@@ -34,4 +34,6 @@
 .Zero {
     min-width: 160px;
     border-radius: 45px;
+    text-align: left;
+    padding-left: 25px;
 }

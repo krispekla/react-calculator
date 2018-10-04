@@ -4,10 +4,10 @@
     border: none;
     background: inherit;
     color: white;
-    height: 60px;
-    font-size: 3rem;
+    min-height: 60px;
+    font-size: 3.2rem;
     letter-spacing: 2px;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     padding: 0px;
     text-align: right;
 }
