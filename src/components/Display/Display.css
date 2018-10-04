@@ -1,0 +1,12 @@
+.Display {
+    width: 100%;
+    display: inline-block;
+    border: none;
+    background: inherit;
+    color: white;
+    height: 60px;
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+    padding: 0px;
+    text-align: right;
+}

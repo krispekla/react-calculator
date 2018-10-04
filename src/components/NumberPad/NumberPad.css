@@ -1,0 +1,17 @@
+.Button {
+    min-width: 80px;
+    height: 80px;
+    align-items: center;
+    text-align: center;
+    margin:2px  10px;
+    color:white;
+    background: rgb(51, 48, 48);
+    font-size: 2rem;
+    border-radius: 50%;
+    border: none;
+}
+.Button:hover {
+    background: rgb(61, 57, 57);
+    cursor: pointer;
+}
+
