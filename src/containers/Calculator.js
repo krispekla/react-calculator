@@ -51,10 +51,7 @@ class Calculator extends Component {
       let operatorArray = [...this.state.currentOperator];
       operatorArray.push(operation);
 
-      //Handling more then one dot
-      // if (operation==='.') {
-      // }
-
+      //Handling operations when there is enough saved in array
       if (operatorArray.length === 2) {
         //Add
         if (operatorArray[0] === "+") {
@@ -77,7 +74,7 @@ class Calculator extends Component {
 
         operatorArray.shift();
         if (result % 1 !== 0) {
-          result = result.toFixed(2);
+          result = parseFloat(result).toFixed(2);
         }
 
         if (operation === "=") {
@@ -85,15 +82,22 @@ class Calculator extends Component {
           operation = result;
         }
       }
+      else if (!result) {
+        result =input;
+      }
 
+      //State update
       this.resetInput();
       this.setState({
         input: operation,
         currentOperator: operatorArray,
-        accumulator: input,
+        accumulator: result,
         result,
         history: updateHistory
       });
+
+      //MORE OPERATION CASES
+      //Changing sign
       if (operation === "+/-") {
         if (input > 0) {
           input = "-" + input;
@@ -111,6 +115,8 @@ class Calculator extends Component {
           currentOperator: operatorArray
         });
       }
+
+      //Percent
       if (operation === "%") {
         result = 0;
         result = input / 100;
@@ -122,6 +128,8 @@ class Calculator extends Component {
           currentOperator: operatorArray
         });
       }
+
+      //Clearing all
       if (operation === "AC") {
         this.clearAll();
       }
