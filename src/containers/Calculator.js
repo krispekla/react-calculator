@@ -32,14 +32,15 @@ class Calculator extends Component {
     });
   };
 
+  //Handling button operation
   operationHandler = operation => {
     let result = this.state.accumulator;
     let input = parseFloat(this.state.input);
-    
+
     //Using functions without numbers
     if (isNaN(input)) {
       input = "Enter number";
-      this.setState({input});
+      this.setState({ input });
     } else {
       //Pushing history
       const updateHistory = [...this.state.history];
@@ -49,6 +50,10 @@ class Calculator extends Component {
       //Pushing operator
       let operatorArray = [...this.state.currentOperator];
       operatorArray.push(operation);
+
+      //Handling more then one dot
+      // if (operation==='.') {
+      // }
 
       if (operatorArray.length === 2) {
         //Add
@@ -61,7 +66,7 @@ class Calculator extends Component {
           result -= input;
         }
         //Multiplication
-        if (operatorArray[0] === "*") {
+        if (operatorArray[0] === "x") {
           result *= input;
         }
 
@@ -71,6 +76,9 @@ class Calculator extends Component {
         }
 
         operatorArray.shift();
+        if (result % 1 !== 0) {
+          result = result.toFixed(2);
+        }
 
         if (operation === "=") {
           operatorArray.shift();
@@ -120,6 +128,7 @@ class Calculator extends Component {
     }
   };
 
+  //Handling number buttons
   buttonSubmitHandler = e => {
     let submit = e.target.value;
     let input = this.state.input;
@@ -127,8 +136,16 @@ class Calculator extends Component {
       input = "";
     }
 
-    submit = input + submit;
-    this.setState({ input: submit });
+    //Checking multiple dots entered
+    if (
+      (input.indexOf(".") > -1 && submit === ".") ||
+      (submit === "." && input === "")
+    ) {
+      submit = "";
+    } else {
+      submit = input + submit;
+      this.setState({ input: submit });
+    }
   };
 
   render() {

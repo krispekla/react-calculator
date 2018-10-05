@@ -9,7 +9,7 @@ const keyArray = [
   { value: "7" },
   { value: "8" },
   { value: "9" },
-  { value: "*" },
+  { value: "x" },
   { value: "4" },
   { value: "5" },
   { value: "6" },
