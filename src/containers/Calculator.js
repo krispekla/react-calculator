@@ -8,7 +8,8 @@ class Calculator extends Component {
     accumulator: 0,
     result: 0,
     history: [],
-    currentOperator: []
+    currentOperator: [],
+    displayFirst:true
   };
 
   inputTextChanger = e => {
@@ -75,8 +76,8 @@ class Calculator extends Component {
       if (operation === "=") {
         operatorArray.shift();
         operation = result;
-        // let clearAcc = '';
-        // this.setState({accumulator:clearAcc})
+        let clearAcc = '';
+        this.setState({accumulator:clearAcc})
       }
     } else if (!result) {
       result = input;
@@ -109,7 +110,8 @@ class Calculator extends Component {
         input: result,
         accumulator: result,
         result,
-        currentOperator: operatorArray
+        currentOperator: operatorArray,
+        displayFirst:false
       });
     }
 
@@ -153,12 +155,13 @@ class Calculator extends Component {
   };
 
   render() {
+    let firstDisplay = this.state.displayFirst?null : this.state.accumulator;
     return (
       <React.Fragment>
         <Display
           inputHandler={this.inputTextChanger}
           currentNumber={this.state.input}
-          lastEntered={this.state.accumulator}
+          lastEntered={firstDisplay}
           operator={this.state.currentOperator[0]}
         />
         <NumberPad
