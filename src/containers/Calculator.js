@@ -37,105 +37,98 @@ class Calculator extends Component {
     let result = this.state.accumulator;
     let input = parseFloat(this.state.input);
 
-    //Using functions without numbers
-    if (isNaN(input)) {
-      input = "Enter number";
-      this.setState({ input });
-    } else {
-      //Pushing history
-      const updateHistory = [...this.state.history];
-      updateHistory.push(input);
-      updateHistory.push(operation);
+    //Pushing history
+    const updateHistory = [...this.state.history];
+    updateHistory.push(input);
+    updateHistory.push(operation);
 
-      //Pushing operator
-      let operatorArray = [...this.state.currentOperator];
-      operatorArray.push(operation);
+    //Pushing operator
+    let operatorArray = [...this.state.currentOperator];
+    operatorArray.push(operation);
 
-      //Handling operations when there is enough saved in array
-      if (operatorArray.length === 2) {
-        //Add
-        if (operatorArray[0] === "+") {
-          result += input;
-        }
+    //Handling operations when there is enough saved in array
+    if (operatorArray.length === 2) {
+      //Add
+      if (operatorArray[0] === "+") {
+        result += input;
+      }
 
-        //Subtract
-        if (operatorArray[0] === "-") {
-          result -= input;
-        }
-        //Multiplication
-        if (operatorArray[0] === "x") {
-          result *= input;
-        }
+      //Subtract
+      if (operatorArray[0] === "-") {
+        result -= input;
+      }
+      //Multiplication
+      if (operatorArray[0] === "x") {
+        result *= input;
+      }
 
-        //Divide
-        if (operatorArray[0] === "/") {
-          result /= input;
-        }
+      //Divide
+      if (operatorArray[0] === "/") {
+        result /= input;
+      }
 
+      operatorArray.shift();
+      if (result % 1 !== 0) {
+        result = parseFloat(result).toFixed(2);
+      }
+
+      if (operation === "=") {
         operatorArray.shift();
-        if (result % 1 !== 0) {
-          result = parseFloat(result).toFixed(2);
-        }
-
-        if (operation === "=") {
-          operatorArray.shift();
-          operation = result;
-        }
+        operation = result;
+        // let clearAcc = '';
+        // this.setState({accumulator:clearAcc})
       }
-      else if (!result) {
-        result =input;
+    } else if (!result) {
+      result = input;
+    }
+
+    //State update
+    this.resetInput();
+    this.setState({
+      input: "",
+      currentOperator: operatorArray,
+      accumulator: result,
+      result,
+      history: updateHistory
+    });
+
+    //MORE OPERATION CASES
+    //Changing sign
+    if (operation === "+/-") {
+      if (input > 0) {
+        input = "-" + input;
+      } else {
+        input = "" + input;
+        input = input.slice(1);
       }
 
-      //State update
-      this.resetInput();
+      input = parseFloat(input);
+      operatorArray.shift();
+      result = input;
       this.setState({
-        input: operation,
-        currentOperator: operatorArray,
+        input: result,
         accumulator: result,
         result,
-        history: updateHistory
+        currentOperator: operatorArray
       });
+    }
 
-      //MORE OPERATION CASES
-      //Changing sign
-      if (operation === "+/-") {
-        if (input > 0) {
-          input = "-" + input;
-        } else {
-          input = '' +input;
-          input = input.slice(1);
+    //Percent
+    if (operation === "%") {
+      result = 0;
+      result = input / 100;
 
-          
-        }
+      operatorArray.shift();
+      this.setState({
+        input: result,
+        result,
+        currentOperator: operatorArray
+      });
+    }
 
-        input = parseFloat(input);
-        operatorArray.shift();
-        result = input;
-        this.setState({
-          input: result,
-          accumulator:result,
-          result,
-          currentOperator: operatorArray
-        });
-      }
-
-      //Percent
-      if (operation === "%") {
-        result = 0;
-        result = input / 100;
-
-        operatorArray.shift();
-        this.setState({
-          input: result,
-          result,
-          currentOperator: operatorArray
-        });
-      }
-
-      //Clearing all
-      if (operation === "AC") {
-        this.clearAll();
-      }
+    //Clearing all
+    if (operation === "AC") {
+      this.clearAll();
     }
   };
 
@@ -164,7 +157,9 @@ class Calculator extends Component {
       <React.Fragment>
         <Display
           inputHandler={this.inputTextChanger}
-          input={this.state.input}
+          currentNumber={this.state.input}
+          lastEntered={this.state.accumulator}
+          operator={this.state.currentOperator[0]}
         />
         <NumberPad
           buttonSubmit={this.buttonSubmitHandler}
