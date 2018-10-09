@@ -102,8 +102,10 @@ class Calculator extends Component {
         if (input > 0) {
           input = "-" + input;
         } else {
-          input = toString(input);
-          input = input.substring(1, input.length);
+          input = '' +input;
+          input = input.slice(1);
+
+          
         }
 
         input = parseFloat(input);
@@ -111,6 +113,7 @@ class Calculator extends Component {
         result = input;
         this.setState({
           input: result,
+          accumulator:result,
           result,
           currentOperator: operatorArray
         });
