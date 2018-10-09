@@ -114,14 +114,19 @@ class Calculator extends Component {
 
       input = parseFloat(input);
       operatorArray.shift();
+      console.log(input);
       result = input;
       this.setState({
         input: result,
         accumulator: result,
         result,
         currentOperator: operatorArray,
-        displayFirst: false
+        displayFirst:false
       });
+
+      if (this.state.equalWasLast) {
+          this.setState({displayFirst:true})
+      }
     }
 
     //Percent
