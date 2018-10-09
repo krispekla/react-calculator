@@ -114,7 +114,7 @@ class Calculator extends Component {
 
       input = parseFloat(input);
       operatorArray.shift();
-      console.log(input);
+      console.log(input);//ovdje sam stao
       result = input;
       this.setState({
         input: result,
