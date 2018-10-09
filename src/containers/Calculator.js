@@ -14,7 +14,7 @@ class Calculator extends Component {
   inputTextChanger = e => {
     let newInput = parseFloat(e.target.value);
 
-    this.setState({ input: newInput });
+    this.setState({ input: newInput }); 
   };
   //reset result
   resetInput = () => {
@@ -39,7 +39,13 @@ class Calculator extends Component {
 
     //Pushing history
     const updateHistory = [...this.state.history];
-    updateHistory.push(input);
+
+    //Updating history result (future update)
+    if (input) {
+      updateHistory.push(input);
+    } else {
+      updateHistory.push(result);
+    }
     updateHistory.push(operation);
 
     //Pushing operator
