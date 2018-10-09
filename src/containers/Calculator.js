@@ -9,7 +9,8 @@ class Calculator extends Component {
     result: 0,
     history: [],
     currentOperator: [],
-    displayFirst:true
+    displayFirst: true,
+    equalWasLast: false
   };
 
   inputTextChanger = e => {
@@ -37,6 +38,10 @@ class Calculator extends Component {
   operationHandler = operation => {
     let result = this.state.accumulator;
     let input = parseFloat(this.state.input);
+
+    if (operation) {
+      this.setState({ equalWasLast: false });
+    }
 
     //Pushing history
     const updateHistory = [...this.state.history];
@@ -70,14 +75,17 @@ class Calculator extends Component {
 
       operatorArray.shift();
       if (result % 1 !== 0) {
-        result = parseFloat(result).toFixed(2);
+        result = parseFloat(result.toFixed(2));
+      }
+
+      if (this.state.equalWasLast) {
+        this.setState({ equalWasLast: false, accumulator: 0 });
       }
 
       if (operation === "=") {
         operatorArray.shift();
         operation = result;
-        let clearAcc = '';
-        this.setState({accumulator:clearAcc})
+        this.setState({ equalWasLast: true });
       }
     } else if (!result) {
       result = input;
@@ -90,7 +98,8 @@ class Calculator extends Component {
       currentOperator: operatorArray,
       accumulator: result,
       result,
-      history: updateHistory
+      history: updateHistory,
+      displayFirst: true
     });
 
     //MORE OPERATION CASES
@@ -111,7 +120,7 @@ class Calculator extends Component {
         accumulator: result,
         result,
         currentOperator: operatorArray,
-        displayFirst:false
+        displayFirst: false
       });
     }
 
@@ -123,8 +132,10 @@ class Calculator extends Component {
       operatorArray.shift();
       this.setState({
         input: result,
+        accumulator: result,
         result,
-        currentOperator: operatorArray
+        currentOperator: operatorArray,
+        displayFirst: false
       });
     }
 
@@ -151,11 +162,23 @@ class Calculator extends Component {
     } else {
       submit = input + submit;
       this.setState({ input: submit });
+      if (this.state.equalWasLast) {
+        this.clearAll();
+        input = submit;
+        this.setState({ input: submit });
+      }
+    }
+    this.setState({ input: submit });
+
+    //Special case if entering number after equal
+    if (toString(submit) === ".") {
+      submit = parseFloat(input + submit);
+      this.setState({ input: submit });
     }
   };
 
   render() {
-    let firstDisplay = this.state.displayFirst?null : this.state.accumulator;
+    let firstDisplay = this.state.displayFirst ? this.state.accumulator : null;
     return (
       <React.Fragment>
         <Display
