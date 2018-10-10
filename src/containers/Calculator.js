@@ -33,8 +33,29 @@ class Calculator extends Component {
     });
   };
 
+  //calculating result
+  calculateResult = (input, result, operatorArray) => {
+    //Add
+    if (operatorArray[0] === "+") {
+      result += input;
+    }
 
-  
+    //Subtract
+    if (operatorArray[0] === "-") {
+      result -= input;
+    }
+    //Multiplication
+    if (operatorArray[0] === "x") {
+      result *= input;
+    }
+
+    //Divide
+    if (operatorArray[0] === "/") {
+      result /= input;
+    }
+    return result;
+  };
+
   //Handling button operation
   operationHandler = operation => {
     let result = this.state.accumulator;
@@ -44,31 +65,14 @@ class Calculator extends Component {
       this.setState({ equalWasLast: false });
     }
 
-   
     //Pushing operator
     let operatorArray = [...this.state.currentOperator];
     operatorArray.push(operation);
 
     //Handling operations when there is enough saved in array
     if (operatorArray.length === 2) {
-      //Add
-      if (operatorArray[0] === "+") {
-        result += input;
-      }
 
-      //Subtract
-      if (operatorArray[0] === "-") {
-        result -= input;
-      }
-      //Multiplication
-      if (operatorArray[0] === "x") {
-        result *= input;
-      }
-
-      //Divide
-      if (operatorArray[0] === "/") {
-        result /= input;
-      }
+      result = this.calculateResult(input,result,operatorArray);
 
       operatorArray.shift();
       if (result % 1 !== 0 && result % 1 < 100) {
