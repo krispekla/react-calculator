@@ -7,7 +7,6 @@ class Calculator extends Component {
     input: "",
     accumulator: 0,
     result: 0,
-    history: [],
     currentOperator: [],
     displayFirst: true,
     equalWasLast: false
@@ -34,6 +33,8 @@ class Calculator extends Component {
     });
   };
 
+
+  
   //Handling button operation
   operationHandler = operation => {
     let result = this.state.accumulator;
@@ -43,11 +44,7 @@ class Calculator extends Component {
       this.setState({ equalWasLast: false });
     }
 
-    //Pushing history
-    const updateHistory = [...this.state.history];
-    updateHistory.push(input);
-    updateHistory.push(operation);
-
+   
     //Pushing operator
     let operatorArray = [...this.state.currentOperator];
     operatorArray.push(operation);
@@ -90,7 +87,6 @@ class Calculator extends Component {
           displayFirst: true,
           input: result
         });
-        console.log(result, typeof result);
       }
     } else if (!result) {
       result = input;
@@ -101,14 +97,12 @@ class Calculator extends Component {
       input: "",
       currentOperator: operatorArray,
       accumulator: result,
-      result,
-      history: updateHistory
+      result
     });
 
     //MORE OPERATION CASES
     //Changing sign
     if (operation === "+/-") {
-      console.log(typeof input, input);
       if (this.state.equalWasLast) {
         input = this.state.result;
       } else {
@@ -162,7 +156,7 @@ class Calculator extends Component {
     if (isNaN(input)) {
       input = "";
     }
-
+    // debugger;
     //Checking multiple dots entered
     if (
       (input.indexOf(".") > -1 && submit === ".") ||
