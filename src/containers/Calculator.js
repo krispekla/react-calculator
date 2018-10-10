@@ -75,7 +75,7 @@ class Calculator extends Component {
 
       operatorArray.shift();
       if (result % 1 !== 0 && result % 1 < 100) {
-        result = parseFloat(result.toFixed(2));
+        result = parseFloat(result).toFixed(2);
       }
 
       if (this.state.equalWasLast) {
