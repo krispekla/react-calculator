@@ -85,26 +85,31 @@ class Calculator extends Component {
       if (operation === "=") {
         operatorArray.shift();
         operation = result;
-        this.setState({ equalWasLast: true });
+        this.setState({
+          equalWasLast: true,
+          displayFirst: true,
+          input: result
+        });
+        console.log(result, typeof result);
       }
     } else if (!result) {
       result = input;
+      
     }
-
-    //State update
-    this.resetInput();
-    this.setState({
-      input: "",
-      currentOperator: operatorArray,
-      accumulator: result,
-      result,
-      history: updateHistory,
-      displayFirst: true
-    });
+      //State update
+      this.resetInput();
+      this.setState({
+        input: "",
+        currentOperator: operatorArray,
+        accumulator: result,
+        result,
+        history: updateHistory
+      });
 
     //MORE OPERATION CASES
     //Changing sign
     if (operation === "+/-") {
+      input=this.state.result;
       if (input > 0) {
         input = "-" + input;
       } else {
@@ -114,19 +119,16 @@ class Calculator extends Component {
 
       input = parseFloat(input);
       operatorArray.shift();
-      console.log(input);//ovdje sam stao
       result = input;
       this.setState({
         input: result,
         accumulator: result,
         result,
         currentOperator: operatorArray,
-        displayFirst:false
+        displayFirst: false
       });
 
-      if (this.state.equalWasLast) {
-          this.setState({displayFirst:true})
-      }
+    
     }
 
     //Percent
