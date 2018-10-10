@@ -134,7 +134,7 @@ class Calculator extends Component {
     //Percent
     if (operation === "%") {
       result = 0;
-      result = input / 100;
+      result = (input / 100).toFixed(2);
 
       operatorArray.shift();
       this.setState({
