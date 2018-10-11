@@ -32,20 +32,24 @@ class Calculator extends Component {
     //Add
     if (operatorArray[0] === "+") {
       result += input;
+      input = result;
     }
 
     //Subtract
     if (operatorArray[0] === "-") {
       result -= input;
+      input = result;
     }
     //Multiplication
     if (operatorArray[0] === "x") {
       result *= input;
+      input = result;
     }
 
     //Divide
     if (operatorArray[0] === "/") {
       result /= input;
+      input = result;
     }
     return result;
   };
@@ -83,8 +87,7 @@ class Calculator extends Component {
 
     //Percent
     if (operation === "%") {
-      result = 0;
-      result = (input / 100).toFixed(2);
+      result = result / 100;
 
       operatorArray.shift();
       input = result;
@@ -129,11 +132,16 @@ class Calculator extends Component {
       }
 
       if (operation === "=") {
-        operatorArray.shift();
-        operation = result;
-        displayFirst = true;
-        equalWasLast = true;
-        input = result;
+        if (this.state.input === "") {
+          //napisati za slucaj broj + operator + jednako da se nista ne dogada i za obrnuti slucaj
+          console.log("22222");
+        } else {
+          input = result;
+          operatorArray.shift();
+          operation = result;
+          displayFirst = true;
+          equalWasLast = true;
+        }
       }
     } else if (!result) {
       result = input;
@@ -160,8 +168,8 @@ class Calculator extends Component {
       equalWasLast: equalWasLast
     });
 
-     //Clearing all
-     if (operation === "AC") {
+    //Clearing all
+    if (operation === "AC") {
       this.clearAll();
     }
   };
@@ -170,16 +178,17 @@ class Calculator extends Component {
   buttonSubmitHandler = e => {
     let submit = e.target.value;
     let input = this.state.input;
-    if (isNaN(input)) {
-      input = "";
-    }
 
     //Checking multiple dots entered
-    if (
+    if (input.length > 10) {
+      submit = input;
+    } else if (
       (input.indexOf(".") > -1 && submit === ".") ||
       (submit === "." && input === "")
     ) {
       submit = "";
+    } else if (submit === "." && input) {
+      submit = input + ".";
     } else {
       submit = input + submit;
       if (this.state.equalWasLast) {
