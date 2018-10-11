@@ -14,7 +14,6 @@ class Calculator extends Component {
 
   inputTextChanger = e => {
     let newInput = parseFloat(e.target.value);
-
     this.setState({ input: newInput });
   };
 
@@ -49,6 +48,63 @@ class Calculator extends Component {
       result /= input;
     }
     return result;
+  };
+
+  //SPECIAL FUNCTIONS
+  specialFunctions = (
+    operation,
+    input,
+    operatorArray,
+    result,
+    accumulator,
+    displayFirst
+  ) => {
+    //Changing sign
+    if (operation === "+/-") {
+      if (this.state.equalWasLast) {
+        input = this.state.result;
+      } else {
+        input = this.state.input;
+      }
+
+      if (input > 0) {
+        input = "-" + input;
+      } else {
+        input = "" + input;
+        input = input.slice(1);
+      }
+
+      input = parseFloat(input);
+      operatorArray.shift();
+      result = input;
+      accumulator = result;
+      displayFirst = false;
+    }
+
+    //Percent
+    if (operation === "%") {
+      result = 0;
+      result = (input / 100).toFixed(2);
+
+      operatorArray.shift();
+      input = result;
+      accumulator = result;
+      displayFirst = false;
+    }
+    //Clearing all
+    if (operation === "AC") {
+      this.clearAll();
+    }
+
+    const returningVariables = {
+      input,
+      accumulator,
+      result,
+      operatorArray,
+      displayFirst
+    };
+
+    return returningVariables;
   };
 
   //MAIN handling for OPERATIONS
@@ -95,52 +151,23 @@ class Calculator extends Component {
     input = "";
     accumulator = result;
 
-    //Special functions
-    //Changing sign
-    if (operation === "+/-") {
-      if (this.state.equalWasLast) {
-        input = this.state.result;
-      } else {
-        input = this.state.input;
-      }
+    const values = this.specialFunctions(
+      operation,
+      input,
+      operatorArray,
+      result,
+      accumulator,
+      displayFirst
+    );
 
-      if (input > 0) {
-        input = "-" + input;
-      } else {
-        input = "" + input;
-        input = input.slice(1);
-      }
-
-      input = parseFloat(input);
-      operatorArray.shift();
-      result = input;
-      accumulator = result;
-      displayFirst = false;
-    }
-
-    //Percent
-    if (operation === "%") {
-      result = 0;
-      result = (input / 100).toFixed(2);
-
-      operatorArray.shift();
-      input = result;
-      accumulator = result;
-      displayFirst = false;
-    }
     this.setState({
-      input: input,
-      accumulator: accumulator,
+      input: values.input,
+      accumulator: values.accumulator,
       result: result,
-      currentOperator: operatorArray,
-      displayFirst: displayFirst,
+      currentOperator: values.operatorArray,
+      displayFirst: values.displayFirst,
       equalWasLast: equalWasLast
     });
-
-    //Clearing all
-    if (operation === "AC") {
-      this.clearAll();
-    }
   };
 
   //MAIN handling for NUMBERS
