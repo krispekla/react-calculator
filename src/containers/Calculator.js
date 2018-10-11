@@ -91,10 +91,6 @@ class Calculator extends Component {
       accumulator = result;
       displayFirst = false;
     }
-    //Clearing all
-    if (operation === "AC") {
-      this.clearAll();
-    }
 
     const returningVariables = {
       input,
@@ -163,6 +159,11 @@ class Calculator extends Component {
       displayFirst: values.displayFirst,
       equalWasLast: equalWasLast
     });
+
+     //Clearing all
+     if (operation === "AC") {
+      this.clearAll();
+    }
   };
 
   //MAIN handling for NUMBERS
