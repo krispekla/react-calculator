@@ -17,11 +17,6 @@ class Calculator extends Component {
 
     this.setState({ input: newInput });
   };
-  //reset result
-  resetInput = () => {
-    const input = "";
-    this.setState({ input });
-  };
 
   //Clear all
   clearAll = () => {
@@ -56,23 +51,25 @@ class Calculator extends Component {
     return result;
   };
 
-  //Handling button operation
+  //MAIN handling for OPERATIONS
   operationHandler = operation => {
     let result = this.state.accumulator;
     let input = parseFloat(this.state.input);
+    let accumulator = result;
+    let operatorArray = [...this.state.currentOperator];
+    let displayFirst = this.state.displayFirst;
+    let equalWasLast = this.state.equalWasLast;
 
     if (operation) {
-      this.setState({ equalWasLast: false });
+      equalWasLast = false;
     }
 
     //Pushing operator
-    let operatorArray = [...this.state.currentOperator];
     operatorArray.push(operation);
 
     //Handling operations when there is enough saved in array
     if (operatorArray.length === 2) {
-
-      result = this.calculateResult(input,result,operatorArray);
+      result = this.calculateResult(input, result, operatorArray);
 
       operatorArray.shift();
       if (result % 1 !== 0 && result % 1 < 100) {
@@ -80,33 +77,25 @@ class Calculator extends Component {
       }
 
       if (this.state.equalWasLast) {
-        this.setState({ equalWasLast: false, accumulator: 0 });
+        accumulator = 0;
+        equalWasLast = false;
       }
 
       if (operation === "=") {
         operatorArray.shift();
         operation = result;
-        this.setState({
-          equalWasLast: true,
-          displayFirst: true,
-          input: result
-        });
+        displayFirst = true;
+        equalWasLast = true;
+        input = result;
       }
     } else if (!result) {
       result = input;
     }
 
-    
-    //State update
-    this.resetInput();
-    this.setState({
-      input: "",
-      currentOperator: operatorArray,
-      accumulator: result,
-      result
-    });
+    input = "";
+    accumulator = result;
 
-    //MORE OPERATION CASES
+    //Special functions
     //Changing sign
     if (operation === "+/-") {
       if (this.state.equalWasLast) {
@@ -125,13 +114,8 @@ class Calculator extends Component {
       input = parseFloat(input);
       operatorArray.shift();
       result = input;
-      this.setState({
-        input: result,
-        accumulator: result,
-        result,
-        currentOperator: operatorArray,
-        displayFirst: false
-      });
+      accumulator = result;
+      displayFirst = false;
     }
 
     //Percent
@@ -140,14 +124,18 @@ class Calculator extends Component {
       result = (input / 100).toFixed(2);
 
       operatorArray.shift();
-      this.setState({
-        input: result,
-        accumulator: result,
-        result,
-        currentOperator: operatorArray,
-        displayFirst: false
-      });
+      input = result;
+      accumulator = result;
+      displayFirst = false;
     }
+    this.setState({
+      input: input,
+      accumulator: accumulator,
+      result: result,
+      currentOperator: operatorArray,
+      displayFirst: displayFirst,
+      equalWasLast: equalWasLast
+    });
 
     //Clearing all
     if (operation === "AC") {
@@ -155,14 +143,14 @@ class Calculator extends Component {
     }
   };
 
-  //Handling number buttons
+  //MAIN handling for NUMBERS
   buttonSubmitHandler = e => {
     let submit = e.target.value;
     let input = this.state.input;
     if (isNaN(input)) {
       input = "";
     }
-    // debugger;
+
     //Checking multiple dots entered
     if (
       (input.indexOf(".") > -1 && submit === ".") ||
@@ -171,18 +159,18 @@ class Calculator extends Component {
       submit = "";
     } else {
       submit = input + submit;
-      this.setState({ input: submit });
       if (this.state.equalWasLast) {
         this.clearAll();
         input = submit;
-        this.setState({ input: submit });
       }
     }
+
     this.setState({ input: submit });
   };
 
   render() {
     let firstDisplay = this.state.displayFirst ? this.state.accumulator : null;
+
     return (
       <React.Fragment>
         <Display
