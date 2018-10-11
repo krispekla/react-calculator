@@ -114,11 +114,7 @@ class Calculator extends Component {
     let accumulator = result;
     let operatorArray = [...this.state.currentOperator];
     let displayFirst = this.state.displayFirst;
-    let equalWasLast = this.state.equalWasLast;
-
-    if (operation) {
-      equalWasLast = false;
-    }
+    let equalWasLast = false;
 
     //Pushing operator
     operatorArray.push(operation);
@@ -134,7 +130,6 @@ class Calculator extends Component {
 
       if (this.state.equalWasLast) {
         accumulator = 0;
-        equalWasLast = false;
       }
 
       if (operation === "=") {
