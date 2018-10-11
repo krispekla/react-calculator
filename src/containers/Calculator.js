@@ -95,6 +95,8 @@ class Calculator extends Component {
     } else if (!result) {
       result = input;
     }
+
+    
     //State update
     this.resetInput();
     this.setState({
