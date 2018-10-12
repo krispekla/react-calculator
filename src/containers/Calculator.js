@@ -9,7 +9,8 @@ class Calculator extends Component {
     result: 0,
     currentOperator: [],
     displayFirst: true,
-    equalWasLast: false
+    equalWasLast: false,
+    lengthForScaling:0
   };
 
   inputTextChanger = e => {
@@ -114,6 +115,7 @@ class Calculator extends Component {
     let operatorArray = [...this.state.currentOperator];
     let displayFirst = this.state.displayFirst;
     let equalWasLast = false;
+    let lengthForScaling = this.state.lengthForScaling;
     //Pushing operator
     operatorArray.push(operation);
 
@@ -142,6 +144,7 @@ class Calculator extends Component {
           operatorArray.shift();
           displayFirst = true;
           equalWasLast = true;
+          lengthForScaling=0;
         }
       }
     } else if (!result) {
@@ -160,13 +163,15 @@ class Calculator extends Component {
       displayFirst
     );
 
+
     this.setState({
       input: values.input,
       accumulator: values.accumulator,
       result: result,
       currentOperator: values.operatorArray,
       displayFirst: values.displayFirst,
-      equalWasLast: equalWasLast
+      equalWasLast: equalWasLast,
+      lengthForScaling:lengthForScaling
     });
 
     //Clearing all
@@ -179,9 +184,10 @@ class Calculator extends Component {
   buttonSubmitHandler = e => {
     let submit = e.target.value;
     let input = this.state.input;
+    let increaseLength= this.state.lengthForScaling;
 
     //Checking multiple dots entered
-    if (input.length > 10) {
+    if (input.length > 12) {
       submit = input;
     } else if (
       (input.indexOf(".") > -1 && submit === ".") ||
@@ -190,15 +196,16 @@ class Calculator extends Component {
       submit = input;
     } else if (submit === "." && input) {
       submit = input + ".";
+      increaseLength++;
     } else {
       submit = input + submit;
+      increaseLength++;
       if (this.state.equalWasLast) {
         this.clearAll();
         input = submit;
       }
     }
-
-    this.setState({ input: submit });
+    this.setState({ input: submit,lengthForScaling:increaseLength });
   };
 
   render() {
@@ -211,6 +218,7 @@ class Calculator extends Component {
           currentNumber={this.state.input}
           lastEntered={firstDisplay}
           operator={this.state.currentOperator[0]}
+          scalingLength={this.state.lengthForScaling}
         />
         <NumberPad
           buttonSubmit={this.buttonSubmitHandler}
