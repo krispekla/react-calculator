@@ -186,7 +186,7 @@ class Calculator extends Component {
       (input.indexOf(".") > -1 && submit === ".") ||
       (submit === "." && input === "")
     ) {
-      submit = "";
+      submit = input;
     } else if (submit === "." && input) {
       submit = input + ".";
     } else {
