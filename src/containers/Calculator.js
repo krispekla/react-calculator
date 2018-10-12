@@ -8,6 +8,7 @@ class Calculator extends Component {
     accumulator: 0,
     result: 0,
     currentOperator: [],
+    lastWasOperand:false,
     displayFirst: true,
     equalWasLast: false
   };
@@ -114,10 +115,11 @@ class Calculator extends Component {
     let operatorArray = [...this.state.currentOperator];
     let displayFirst = this.state.displayFirst;
     let equalWasLast = false;
-
+    let lastWasOperand = this.state.lastWasOperand;
     //Pushing operator
     operatorArray.push(operation);
 
+  
     //Handling operations when there is enough saved in array
     if (operatorArray.length === 2) {
       result = this.calculateResult(input, result, operatorArray);
@@ -133,12 +135,13 @@ class Calculator extends Component {
 
       if (operation === "=") {
         if (this.state.input === "") {
-          //napisati za slucaj broj + operator + jednako da se nista ne dogada i za obrnuti slucaj
-          console.log("22222");
+          input=result;
+          result=accumulator;
+          operation=operatorArray[0];
         } else {
           input = result;
-          operatorArray.shift();
           operation = result;
+          operatorArray.shift();
           displayFirst = true;
           equalWasLast = true;
         }
