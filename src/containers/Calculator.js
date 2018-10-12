@@ -5,12 +5,11 @@ import NumberPad from "../components/NumberPad/NumberPad";
 class Calculator extends Component {
   state = {
     input: "",
-    accumulator: 0,
     result: 0,
     currentOperator: [],
     displayFirst: true,
     equalWasLast: false,
-    lengthForScaling:0
+    lengthForScaling: 0
   };
 
   inputTextChanger = e => {
@@ -22,7 +21,6 @@ class Calculator extends Component {
   clearAll = () => {
     this.setState({
       input: "",
-      accumulator: 0,
       result: 0,
       currentOperator: []
     });
@@ -32,6 +30,7 @@ class Calculator extends Component {
   calculateResult = (input, result, operatorArray) => {
     //Add
     if (operatorArray[0] === "+") {
+      // console.log('operatorArray',operatorArray[0]);
       result += input;
       input = result;
     }
@@ -61,7 +60,6 @@ class Calculator extends Component {
     input,
     operatorArray,
     result,
-    accumulator,
     displayFirst
   ) => {
     //Changing sign
@@ -82,7 +80,6 @@ class Calculator extends Component {
       input = parseFloat(input);
       operatorArray.shift();
       result = input;
-      accumulator = result;
       displayFirst = false;
     }
 
@@ -92,13 +89,11 @@ class Calculator extends Component {
 
       operatorArray.shift();
       input = result;
-      accumulator = result;
       displayFirst = false;
     }
 
     const returningVariables = {
       input,
-      accumulator,
       result,
       operatorArray,
       displayFirst
@@ -109,9 +104,8 @@ class Calculator extends Component {
 
   //MAIN handling for OPERATIONS
   operationHandler = operation => {
-    let result = this.state.accumulator;
+    let result = this.state.result;
     let input = parseFloat(this.state.input);
-    let accumulator = result;
     let operatorArray = [...this.state.currentOperator];
     let displayFirst = this.state.displayFirst;
     let equalWasLast = false;
@@ -119,32 +113,29 @@ class Calculator extends Component {
     //Pushing operator
     operatorArray.push(operation);
 
-  
     //Handling operations when there is enough saved in array
     if (operatorArray.length === 2) {
       result = this.calculateResult(input, result, operatorArray);
-
       operatorArray.shift();
       if (result % 1 !== 0 && result % 1 < 100) {
         result = parseFloat(result).toFixed(2);
       }
 
       if (this.state.equalWasLast) {
-        accumulator = 0;
+        result = 0;
       }
 
       if (operation === "=") {
         if (this.state.input === "") {
-          input=result;
-          result=accumulator;
-          operation=operatorArray[0];
+          input = result;
+          operation = operatorArray[0];
         } else {
           input = result;
           operation = result;
           operatorArray.shift();
           displayFirst = true;
           equalWasLast = true;
-          lengthForScaling=0;
+          lengthForScaling = 0;
         }
       }
     } else if (!result) {
@@ -152,26 +143,22 @@ class Calculator extends Component {
     }
 
     input = "";
-    accumulator = result;
 
     const values = this.specialFunctions(
       operation,
       input,
       operatorArray,
       result,
-      accumulator,
       displayFirst
     );
 
-
     this.setState({
       input: values.input,
-      accumulator: values.accumulator,
       result: result,
       currentOperator: values.operatorArray,
       displayFirst: values.displayFirst,
       equalWasLast: equalWasLast,
-      lengthForScaling:lengthForScaling
+      lengthForScaling: lengthForScaling
     });
 
     //Clearing all
@@ -184,7 +171,7 @@ class Calculator extends Component {
   buttonSubmitHandler = e => {
     let submit = e.target.value;
     let input = this.state.input;
-    let increaseLength= this.state.lengthForScaling;
+    let increaseLength = this.state.lengthForScaling;
 
     //Checking multiple dots entered
     if (input.length > 12) {
@@ -205,11 +192,11 @@ class Calculator extends Component {
         input = submit;
       }
     }
-    this.setState({ input: submit,lengthForScaling:increaseLength });
+    this.setState({ input: submit, lengthForScaling: increaseLength });
   };
 
   render() {
-    let firstDisplay = this.state.displayFirst ? this.state.accumulator : null;
+    let firstDisplay = this.state.displayFirst ? this.state.result : null;
 
     return (
       <React.Fragment>
