@@ -8,7 +8,6 @@ class Calculator extends Component {
     accumulator: 0,
     result: 0,
     currentOperator: [],
-    lastWasOperand:false,
     displayFirst: true,
     equalWasLast: false
   };
@@ -115,7 +114,6 @@ class Calculator extends Component {
     let operatorArray = [...this.state.currentOperator];
     let displayFirst = this.state.displayFirst;
     let equalWasLast = false;
-    let lastWasOperand = this.state.lastWasOperand;
     //Pushing operator
     operatorArray.push(operation);
 
