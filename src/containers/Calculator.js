@@ -39,7 +39,6 @@ class Calculator extends Component {
     let operator = this.state.currentOperator;
     let lengthForScaling = this.state.lengthForScaling;
 
-    console.log(operation, operator);
     if ((input && result) || operation === "=") {
       result = this.calculateResult(input, result, operator);
       input = "";
@@ -51,7 +50,7 @@ class Calculator extends Component {
     if (operation !== "=") {
       operator = operation;
     }
-    console.log(operation, operator);
+    result = "" + result;
 
     this.setState({
       input,
@@ -83,20 +82,41 @@ class Calculator extends Component {
     if (operation === "/") {
       result /= input;
     }
+
+    if (result % 1 !== 0) {
+      result = result.toFixed(2);
+    }
+
     return result;
   };
 
   //SPECIAL FUNCTIONS
   specialFunctions = operation => {
-    let result, input, currentOperator;
+    let { result, input, currentOperator } = this.state;
     //Changing sign
     if (operation === "+/-") {
-      console.log("+/-");
+      let temp = input;
+      if (result) {
+        temp = result;
+      }
+
+      if (temp[0] !== "-") {
+        temp = "-" + temp;
+      } else {
+        temp = temp.slice(1);
+      }
+
+      if (!result) {
+        input = temp;
+      } else {
+        result = temp;
+      }
     }
 
     //Percent
     else if (operation === "%") {
-      console.log("%");
+      input *= 0.01;
+      input = "" + input;
     }
     //Clearing all
     else if (operation === "AC") {
@@ -110,13 +130,17 @@ class Calculator extends Component {
 
   //Equal handling
   equalHandler = () => {
-    console.log("equal");
     this.operationHandler("=");
   };
 
   //Dot handling
   dotAdder = () => {
-    console.log("dot");
+    let { input } = this.state;
+    if (!input.includes(".")) {
+      input = input + ".";
+    }
+
+    this.setState({ input });
   };
 
   render() {

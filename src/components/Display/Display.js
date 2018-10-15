@@ -8,7 +8,7 @@ const display = props => {
   }
   return (
     <p className={DisplayNumbers} onChange={props.inputHandler}>
-      {props.result} , {props.showCurrentOperator},{props.currentNumber}
+      {props.result}  {props.showCurrentOperator} {props.currentNumber}
     </p>
   );
 };
