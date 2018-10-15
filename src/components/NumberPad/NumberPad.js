@@ -26,22 +26,26 @@ const keyArray = [
 const numberPad = props => {
   const mappedNumberPad = keyArray.map(btn => {
     let typeCheck = () => props.operation(btn.value);
-    
-    let padStyle= "Button";
-    if (!isNaN(btn.value) || btn.value === ".") {
-      typeCheck = props.buttonSubmit;
-    }
-    else if (btn.value==='AC' || btn.value==='+/-' || btn.value==='%') {
-      padStyle += " ButtonGrey";      
-    }
-    else {
+
+    let padStyle = "Button";
+    if (btn.value === ".") {
+      typeCheck = props.dotAdder;
+    } else if (!isNaN(btn.value)) {
+      typeCheck = props.numbersHandler;
+    } else if (btn.value === "=") {
+      typeCheck = props.equal;
+      padStyle += " ButtonOrange";
+    } else if (btn.value === "AC" || btn.value === "+/-" || btn.value === "%") {
+      padStyle += " ButtonGrey";
+      typeCheck =()=> props.specialFunctions(btn.value);
+    } else {
       padStyle += " ButtonOrange";
     }
 
-    if (btn.value==='0') {
+    if (btn.value === "0") {
       padStyle += " Zero";
     }
-   
+
     return (
       <button
         key={btn.value}
