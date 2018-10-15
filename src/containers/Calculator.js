@@ -115,8 +115,18 @@ class Calculator extends Component {
 
     //Percent
     else if (operation === "%") {
-      input *= 0.01;
-      input = "" + input;
+      let temp = input;
+      if (result) {
+        temp = result;
+      }
+      temp *= 0.01;
+      temp = "" + temp;
+
+      if (!result) {
+        input = temp;
+      } else {
+        result = temp;
+      }
     }
     //Clearing all
     else if (operation === "AC") {
@@ -130,7 +140,10 @@ class Calculator extends Component {
 
   //Equal handling
   equalHandler = () => {
-    this.operationHandler("=");
+    if (!this.state.currentOperator) {
+    } else if (this.state.input) {
+      this.operationHandler("=");
+    }
   };
 
   //Dot handling
