@@ -20,16 +20,18 @@ class Calculator extends Component {
     let submit = e.target.value;
     let input = this.state.input;
     let increaseLength = this.state.lengthForScaling;
-
+    let result = this.state.result;
     //Checking multiple dots entered
     if (input.length > 12) {
       submit = input;
+    } else if (!this.state.currentOperator && result && !input) {
+      result = "";
     } else {
       submit = input + submit;
       increaseLength++;
     }
 
-    this.setState({ input: submit, lengthForScaling: increaseLength });
+    this.setState({ input: submit, result, lengthForScaling: increaseLength });
   };
 
   //Main
