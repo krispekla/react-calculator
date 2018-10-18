@@ -1,18 +1,18 @@
 .Display {
-  width: 80%;
-  display: inline-block;
-  border: none;
-  background: inherit;
-  color: white;
-  min-height: 60px;
-  font-size: 2.5rem;
-  letter-spacing: 2px;
-  margin-bottom: 30px;
-  padding: 0px;
-  text-align: right;
-  font-weight: 700;
+    width: 80%;
+    display: inline-block;
+    border: none;
+    background: inherit;
+    color: white;
+    min-height: 60px;
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+    padding: 0px;
+    text-align: right;
+    font-weight: 700;
 }
 
 .DecreaseFont {
-  font-size: 1.5rem;
+    font-size: 1.5rem;
 }

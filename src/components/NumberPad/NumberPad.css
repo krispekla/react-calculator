@@ -3,8 +3,8 @@
     height: 70px;
     align-items: center;
     text-align: center;
-    margin:4px  10px;
-    color:white;
+    margin: 4px 10px;
+    color: white;
     background: rgb(51, 48, 48);
     font-size: 2rem;
     border-radius: 50%;
@@ -17,11 +17,10 @@
 }
 
 .ButtonOrange {
-    background-color: #FF9500;
+    background-color: #ff9500;
 }
 .ButtonOrange:hover {
     background-color: rgb(255, 136, 0);
-
 }
 .ButtonGrey {
     background-color: #aaa;
